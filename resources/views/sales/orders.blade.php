@@ -27,6 +27,14 @@
       <td><input type="number" value="{{ $order->globalDiscount }}" class="discount table-input globalDiscount" rel="tooltip" title="Global Discount" trigger data-placement="bottom" name="globalDiscount"></td>
       <td><input type="text" value="0" class="price table-input grandTotal" name="grandTotal" readonly></td>
     </tr>
+    <tr>
+      <td colspan="5" style="text-align: right">Customer Paid: </td>
+      <td><input type="text" value="0" class="price table-input customerPayment"></td>
+    </tr>
+    <tr>
+      <td colspan="5" style="text-align: right">Change: </td>
+      <td><input type="text" value="0" class="price table-input changedPayment" readonly></td>
+    </tr>
 @endif
 
 <script type="text/javascript">
@@ -42,6 +50,12 @@
       if (value > 0 && value <= 100) {
         computeAll();
       }
+    });
+
+    $(".customerPayment").on('change', function () {
+      let value = parseFloat($(this).val());
+      let changed = value - parseFloat($(".grandTotal").val());
+      $(".changedPayment").val(changed.toFixed(2));
     });
 
     $(".btn-remove-item").on('click', function () {

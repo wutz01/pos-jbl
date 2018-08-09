@@ -98,6 +98,7 @@
     });
 
     $("#btn-finalize").on('click', function () {
+      $("#btn-finalize").attr('disabled', 'disabled');
       $.post("{!! route('finalize') !!}", {}, (o) => {
         if (o.is_successful) {
           $.notify({
@@ -117,6 +118,7 @@
             timer: 2000
           });
         }
+        $("#btn-finalize").removeAttr('disabled');
       }, 'json');
     });
 

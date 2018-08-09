@@ -84,6 +84,31 @@ Route::group(['prefix' => 'reports', 'middleware' => ['auth']], function () {
     'as' => 'reports',
     'uses' => 'DashboardController@reportsIndex'
   ]);
+
+  Route::get('today/download', [
+    'as' => 'reports.today',
+    'uses' => 'DashboardController@todayDownload'
+  ]);
+
+  Route::get('weekly/download', [
+    'as' => 'reports.weekly',
+    'uses' => 'DashboardController@weeklyDownload'
+  ]);
+
+  Route::get('monthly/download', [
+    'as' => 'reports.monthly',
+    'uses' => 'DashboardController@monthlyDownload'
+  ]);
+
+  Route::get('generate-date-range', [
+    'as' => 'report-generate-date-range',
+    'uses' => 'DashboardController@generateDateRange'
+  ]);
+
+  Route::get('download-date-range', [
+    'as' => 'report-download-date-range',
+    'uses' => 'DashboardController@downloadDateRange'
+  ]);
 });
 
 Route::group(['prefix' => 'inventory', 'middleware' => ['auth', 'role:admin|owner']], function () {

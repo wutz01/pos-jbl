@@ -10,7 +10,8 @@
         "laravel/framework": "5.6.*",
         "laravel/tinker": "^1.0",
         "yajra/laravel-datatables-oracle": "~8.0",
-        "zizaco/entrust": "dev-master"
+        "zizaco/entrust": "dev-master",
+        "maatwebsite/excel": "~2.1.0"
     },
     "require-dev": {
         "filp/whoops": "^2.0",

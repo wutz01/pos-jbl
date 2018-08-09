@@ -61,7 +61,7 @@
                   </div>
               </div>
               <div class="text-center">
-                  <button type="submit" class="btn btn-success btn-fill btn-wd">Save</button>
+                  <button type="submit" class="btn btn-success btn-fill btn-wd" id="btn-save">Save</button>
               </div>
               <div class="clearfix"></div>
           </form>
@@ -110,6 +110,7 @@
 
           $(".error-wrapper").html(html);
         }
+        $("#btn-save").removeAttr('disabled');
       },
 
       error: function (e) {
@@ -120,6 +121,7 @@
 
       beforeSubmit: function () {
         $(".error-wrapper").html('');
+        $("#btn-save").attr('disabled', 'disabled');
       }
     });
   })

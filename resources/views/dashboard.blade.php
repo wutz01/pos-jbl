@@ -29,6 +29,7 @@
           </div>
         </div>
       </div>
+      @if(Auth::user()->hasRole('owner'))
       <div class="col-lg-4 col-sm-6">
         <div class="card">
           <div class="content">
@@ -79,7 +80,9 @@
           </div>
         </div>
       </div>
+      @endif
     </div>
+    @if(Auth::user()->hasRole('owner'))
     <div class="row">
       <div class="col-md-12">
           <div class="card ">
@@ -124,6 +127,7 @@
           </div>
       </div>
     </div>
+    @endif
 </div>
 @endsection
 

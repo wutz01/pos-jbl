@@ -23,12 +23,13 @@
           <div class="footer">
             <hr />
             <div class="stats">
-              <i class="ti-calendar"></i> Today
+              <i class="ti-calendar"></i> <a href="{{ route('reports.today') }}" target="_blank">Today</a>
             </div>
           </div>
         </div>
       </div>
     </div>
+    @if(Auth::user()->hasRole('owner'))
     <div class="col-lg-4 col-sm-6">
       <div class="card">
         <div class="content">
@@ -48,7 +49,7 @@
           <div class="footer">
             <hr />
             <div class="stats">
-              <i class="ti-calendar"></i> Week
+              <i class="ti-calendar"></i> <a href="{{ route('reports.weekly') }}" target="_blank">Week</a>
             </div>
           </div>
         </div>
@@ -73,9 +74,33 @@
           <div class="footer">
             <hr />
             <div class="stats">
-              <i class="ti-calendar"></i> Month
+              <i class="ti-calendar"></i> <a href="{{ route('reports.monthly') }}" target="_blank">Month</a>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    @endif
+  </div>
+  <div class="row">
+    <div class="col-lg-12 col-sm-12">
+      <div class="card">
+        <div class="content">
+          <div class="row">
+            <div class="col-lg-4">
+              <input type="date" id="startDate" value="" class="form-control">
+            </div>
+            <div class="col-lg-4">
+              <input type="date" id="endDate" value="" class="form-control">
+            </div>
+            <div class="col-lg-4">
+              <button type="button" class="btn btn-primary btn-block btn-large" id="generate-btn" name="button">Generate</button>
+            </div>
+          </div>
+          <div id="report"></div>
+        </div>
+        <div class="footer">
+        </div>
         </div>
       </div>
     </div>
@@ -88,6 +113,23 @@
   $(function() {
     $(".nav li").removeClass("active");
     $(".side-nav-reports").addClass("active");
+
+    $("#generate-btn").on('click', function () {
+      var startDate = $("#startDate").val();
+      var endDate   = $("#endDate").val();
+
+      if (!startDate || !endDate) {
+        $.alert({
+          type: 'red',
+          content: 'Enter Start and End Date',
+          title: 'Error!'
+        });
+        return false
+      }
+      $.get("{!! route('report-generate-date-range') !!}", {startDate: startDate, endDate: endDate}, function (o) {
+        $("#report").html(o);
+      });
+    });
   })
 </script>
 @endsection

@@ -324,6 +324,7 @@
 
           $(".error-wrapper").html(html);
         }
+        $("#btn-update").removeAttr('disabled');
       },
 
       error: function (e) {
@@ -334,6 +335,7 @@
 
       beforeSubmit: function () {
         $(".error-wrapper").html('');
+        $("#btn-update").attr('disabled', 'disabled');
       }
     });
   });
