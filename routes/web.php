@@ -48,6 +48,11 @@ Route::group(['prefix' => 'sales', 'middleware' => ['auth']], function () {
     'uses' => 'SalesController@loadInventory'
   ]);
 
+  Route::get('/load-data/senior', [
+    'as' => 'sales.load.senior',
+    'uses' => 'SalesController@loadSeniorCitizen'
+  ]);
+
   Route::get('/load-cart', [
     'as' => 'sales.load.cart',
     'uses' => 'SalesController@loadCart'
@@ -98,6 +103,11 @@ Route::group(['prefix' => 'reports', 'middleware' => ['auth']], function () {
   Route::get('monthly/download', [
     'as' => 'reports.monthly',
     'uses' => 'DashboardController@monthlyDownload'
+  ]);
+
+  Route::get('ending/inventory/download', [
+    'as' => 'reports.ending.inventory',
+    'uses' => 'DashboardController@endingInventory'
   ]);
 
   Route::get('generate-date-range', [

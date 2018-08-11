@@ -10,11 +10,17 @@
           <div class="error-wrapper"></div>
           <form action="{{ route('inventory.save') }}" method="post" id="create-inventory-form">
               <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                       <div class="form-group">
                           <label>Medicine Name</label>
                           <!-- <input type="text" class="form-control border-input" disabled placeholder="Company" value="Creative Code Inc."> -->
                           <input type="text" class="form-control border-input" name="medicineName" placeholder="Medicine Name" value="" required>
+                      </div>
+                  </div>
+                  <div class="col-md-2">
+                      <div class="form-group">
+                          <label>Product Type</label>
+                          <input type="text" class="form-control border-input" name="productType" placeholder="CAPSULE / Etc" value="">
                       </div>
                   </div>
                   <div class="col-md-3">

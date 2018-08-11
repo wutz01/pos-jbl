@@ -66,9 +66,9 @@
                   <th width="10%">Total</th>
                 </thead>
                 <tbody class="orders-container">
-
                 </tbody>
               </table>
+              <input type="hidden" id="senior" value="">
               <button type="button" class="btn btn-success btn-large btn-block" id="btn-finalize" name="button">SAVE ORDER</button>
             </div>
           </div>
@@ -94,12 +94,18 @@
       onSelect: function (suggestion) {
         if (!suggestion) return false
         updateStockLabels(suggestion.data)
-      }
+      },
+      noCache: true,
+      minChars: 3
     });
 
     $("#btn-finalize").on('click', function () {
       $("#btn-finalize").attr('disabled', 'disabled');
-      $.post("{!! route('finalize') !!}", {}, (o) => {
+      let senior = $("#senior").val();
+      if (!senior) {
+        senior = $(".seniorCitizen").val();
+      }
+      $.post("{!! route('finalize') !!}", {seniorCitizen: senior}, (o) => {
         if (o.is_successful) {
           $.notify({
             icon: 'ti-check',
@@ -157,7 +163,6 @@
                       timer: 2000
                   });
                   loadCart();
-                  console.log(`stocks:`, o.stock);
                   updateStockLabels(o.stock);
                 } else {
                   $.notify({

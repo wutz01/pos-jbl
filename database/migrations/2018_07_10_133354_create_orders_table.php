@@ -13,10 +13,17 @@ class CreateOrdersTable extends Migration
      */
     public function up()
     {
+        Schema::create('senior_citizen_list', function (Blueprint $table) {
+          $table->increments('id');
+          $table->string('seniorCitizen')->nullable();
+          $table->timestamps();
+        });
+
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('serverId')->unsigned();
             $table->foreign('serverId')->references('id')->on('users');
+            $table->integer('scId')->comment('Senior Citizen ID')->default(0);
             $table->integer('totalQuantity')->unsigned()->default(0);
             $table->integer('globalDiscount')->unsigned()->default(0);
             $table->decimal('grossPrice', 19, 2)->default(0);
@@ -50,5 +57,6 @@ class CreateOrdersTable extends Migration
     {
         Schema::dropIfExists('order_items');
         Schema::dropIfExists('orders');
+        Schema::dropIfExists('senior_citizen_list');
     }
 }

@@ -4,7 +4,7 @@
 @section('content')
 <div class="container-fluid">
   <div class="row">
-    <div class="col-lg-4 col-sm-6">
+    <div class="col-lg-3 col-sm-6">
       <div class="card">
         <div class="content">
           <div class="row">
@@ -23,14 +23,14 @@
           <div class="footer">
             <hr />
             <div class="stats">
-              <i class="ti-calendar"></i> <a href="{{ route('reports.today') }}" target="_blank">Today</a>
+              <i class="ti-download"></i> <a href="{{ route('reports.today') }}" target="_blank">Today</a>
             </div>
           </div>
         </div>
       </div>
     </div>
     @if(Auth::user()->hasRole('owner'))
-    <div class="col-lg-4 col-sm-6">
+    <div class="col-lg-3 col-sm-6">
       <div class="card">
         <div class="content">
           <div class="row">
@@ -49,13 +49,13 @@
           <div class="footer">
             <hr />
             <div class="stats">
-              <i class="ti-calendar"></i> <a href="{{ route('reports.weekly') }}" target="_blank">Week</a>
+              <i class="ti-download"></i> <a href="{{ route('reports.weekly') }}" target="_blank">Week</a>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-lg-4 col-sm-6">
+    <div class="col-lg-3 col-sm-6">
       <div class="card">
         <div class="content">
           <div class="row">
@@ -74,14 +74,40 @@
           <div class="footer">
             <hr />
             <div class="stats">
-              <i class="ti-calendar"></i> <a href="{{ route('reports.monthly') }}" target="_blank">Month</a>
+              <i class="ti-download"></i> <a href="{{ route('reports.monthly') }}" target="_blank">Month</a>
             </div>
           </div>
         </div>
       </div>
     </div>
     @endif
+    <div class="col-lg-3 col-sm-6">
+      <div class="card">
+        <div class="content">
+          <div class="row">
+            <div class="col-xs-5">
+              <div class="icon-big icon-success text-center">
+                <i class="ti-view-list"></i>
+              </div>
+            </div>
+            <div class="col-xs-7">
+              <div class="numbers">
+                <p>Inventory</p>
+                <span style="font-size: 15px;">-</span>
+              </div>
+            </div>
+          </div>
+          <div class="footer">
+            <hr />
+            <div class="stats">
+              <i class="ti-download"></i> <a href="{{ route('reports.ending.inventory') }}" target="_blank">Ending Inventory</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+  @if(Auth::user()->hasRole('owner'))
   <div class="row">
     <div class="col-lg-12 col-sm-12">
       <div class="card">
@@ -101,10 +127,10 @@
         </div>
         <div class="footer">
         </div>
-        </div>
       </div>
     </div>
   </div>
+  @endif
 </div>
 @endsection
 

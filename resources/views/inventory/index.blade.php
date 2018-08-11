@@ -19,6 +19,7 @@
             <thead>
               <th>ID</th>
               <th>Medicine Name</th>
+              <th>Product Type</th>
               <th>Quantity</th>
               <th>Price / Pc</th>
               <th>Bulk Price</th>
@@ -48,6 +49,7 @@
       columns: [
           {data: 'id', name: 'id'},
           {data: 'medicineName', name: 'medicineName'},
+          {data: 'medicineType', name: 'medicineType'},
           {data: 'stockQty', name: 'stockQty'},
           {data: 'pricePerPiece', name: 'pricePerPiece'},
           {data: 'bulkPrice', name: 'bulkPrice'},

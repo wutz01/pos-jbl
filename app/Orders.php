@@ -15,4 +15,8 @@ class Orders extends Model
   public function user () {
     return $this->belongsTo('App\User', 'serverId');
   }
+
+  public function sc () {
+    return $this->belongsTo('App\Senior', 'scId');
+  }
 }

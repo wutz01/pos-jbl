@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Inventory;
 use App\Orders;
 use App\OrderItems;
+use App\Senior;
 use App\InventoryTrail;
 use DataTables;
 use Auth;
@@ -31,7 +32,7 @@ class SalesController extends Controller
   }
 
   public function loadInventory (Request $request) {
-    $inventory = Inventory::where('medicineName', 'LIKE', '%' . $request->input('query') . '%')->get();
+    $inventory = Inventory::where('medicineName', 'LIKE', '%' . $request->input('query') . '%')->orWhere('medicineType', 'LIKE', '%' . $request->input('query') . '%')->get();
     $stocks = [];
     foreach ($inventory as $key => $value) {
       $object = (object)[];
@@ -41,6 +42,20 @@ class SalesController extends Controller
     }
     $json['query'] = $request->input('query');
     $json['suggestions'] = $stocks;
+    return response()->json($json, 200);
+  }
+
+  public function loadSeniorCitizen (Request $request) {
+    $sc = Senior::where('seniorCitizen', 'LIKE', '%' . $request->input('query') . '%')->get();
+    $list = [];
+    foreach ($sc as $key => $value) {
+      $object = (object)[];
+      $object->value = $value->seniorCitizen;
+      $object->data = $value;
+      $list[] = $object;
+    }
+    $json['query'] = $request->input('query');
+    $json['suggestions'] = $list;
     return response()->json($json, 200);
   }
 
@@ -164,8 +179,19 @@ class SalesController extends Controller
     return response()->json($json, 200);
   }
 
-  public function finalizeOrder () {
+  public function finalizeOrder (Request $request) {
     $order = Orders::where('serverId', Auth::user()->id)->where('status', 'CURRENT', 'AND')->first();
+    $sc    = $request->input('seniorCitizen');
+    if ($sc !== '' || !isEmpty($sc)) {
+      $senior = Senior::where('seniorCitizen', '=', $sc)->first();
+      if (!$senior) {
+        $senior = new Senior;
+        $senior->seniorCitizen = $sc;
+        $senior->save();
+      }
+      $order->scId   = $senior->id;
+    }
+
     $order->status = "SALE";
     $order->save();
     $json['is_successful'] = true;

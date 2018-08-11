@@ -133,49 +133,41 @@
 
 @section('javascript')
 <script>
+  var isAllowed = "{{ (Auth::user()->hasRole('owner') ? true : false) }}";
   $(function() {
-    // $(".nav li").removeClass("active");
-    var data = {
-      // A labels array that can contain any sort of values
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      // Our series array that contains series objects or in this case series data arrays
-      series: [
-        {{ $yearlySales }}
-      ]
-    };
+    if (isAllowed) {
+      var data = {
+        // A labels array that can contain any sort of values
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        // Our series array that contains series objects or in this case series data arrays
+        series: [
+          {{ $yearlySales }}
+        ]
+      };
 
-    var data2 = {
-      // A labels array that can contain any sort of values
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      // Our series array that contains series objects or in this case series data arrays
-      series: [
-        {{ $grossSales }}
-      ]
-    };
+      var data2 = {
+        // A labels array that can contain any sort of values
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        // Our series array that contains series objects or in this case series data arrays
+        series: [
+          {{ $grossSales }}
+        ]
+      };
 
-    // As options we currently only set a static size of 300x200 px
-    var options = {
-        seriesBarDistance: 10,
-        axisX: {
-            showGrid: false
-        },
-        height: "245px"
-    };
+      // As options we currently only set a static size of 300x200 px
+      var options = {
+          seriesBarDistance: 10,
+          axisX: {
+              showGrid: false
+          },
+          height: "245px"
+      };
 
-    new Chartist.Line('#chartActivity', data, options);
-
-
-    new Chartist.Line('#chartGrossSales', data2, options);
+      new Chartist.Line('#chartActivity', data, options);
 
 
-    // $.notify({
-    //   icon: 'ti-home',
-    //   message: "Welcome User!"
-    //
-    // },{
-    //     type: 'success',
-    //     timer: 4000
-    // });
+      new Chartist.Line('#chartGrossSales', data2, options);
+    }
   })
 </script>
 @endsection

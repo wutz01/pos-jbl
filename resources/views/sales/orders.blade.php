@@ -28,6 +28,10 @@
       <td><input type="text" value="0" class="price table-input grandTotal" name="grandTotal" readonly></td>
     </tr>
     <tr>
+      <td colspan="4" style="text-align: right">Senior Citizen ID: </td>
+      <td colspan="2"><input type="text" value="" class="seniorCitizen"></td>
+    </tr>
+    <tr>
       <td colspan="5" style="text-align: right">Customer Paid: </td>
       <td><input type="text" value="0" class="price table-input customerPayment"></td>
     </tr>
@@ -43,6 +47,14 @@
     $(".table-input").on('change', function () {
       var id = $(this).data('id');
       recompute(id);
+    });
+
+    $(".seniorCitizen").autocomplete({
+      serviceUrl: "{{ route('sales.load.senior') }}",
+      onSelect: function (suggestion) {
+        if (!suggestion) return false
+        $("#senior").val(suggestion.data.seniorCitizen);
+      }
     });
 
     $(".globalDiscount").on('change', function () {

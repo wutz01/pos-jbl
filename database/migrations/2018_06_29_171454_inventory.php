@@ -16,6 +16,7 @@ class Inventory extends Migration
       Schema::create('inventory', function (Blueprint $table) {
         $table->increments('id');
         $table->string('medicineName');
+        $table->string('medicineType')->nullable();
         $table->text('description')->nullable();
         $table->decimal('pricePerPiece', 19,2);
         $table->decimal('bulkPrice', 19,2);

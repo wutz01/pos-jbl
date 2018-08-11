@@ -85,6 +85,7 @@ class InventoryController extends Controller
     } else {
       $inv = new Inventory;
       $inv->medicineName  = $request->input('medicineName');
+      $inv->medicineType  = $request->input('productType');
       $inv->pricePerPiece = str_replace(',', '', $request->input('pricePerPiece'));
       $inv->bulkPrice     = str_replace(',', '', $request->input('bulkPrice'));
       $inv->supplierName  = $request->has('supplierName') ? $request->input('supplierName') : '-';
@@ -162,6 +163,7 @@ class InventoryController extends Controller
       }
 
       $inv->medicineName  = $request->input('medicineName');
+      $inv->medicineType  = $request->input('productType');
       $inv->pricePerPiece = str_replace(',', '', $request->input('pricePerPiece'));
       $inv->bulkPrice     = str_replace(',', '', $request->input('bulkPrice'));
       $inv->supplierName  = $request->has('supplierName') ? $request->input('supplierName') : '-';
