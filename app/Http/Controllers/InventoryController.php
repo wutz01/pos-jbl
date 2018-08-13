@@ -17,7 +17,7 @@ class InventoryController extends Controller
   }
 
   public function loadData () {
-    $inventory = Inventory::all();
+    $inventory = Inventory::where('status', 'ACTIVE')->get();
     return DataTables::of($inventory)
       ->editColumn('pricePerPiece', function($inventory){
         return "PHP " . number_format($inventory->pricePerPiece,2,'.',',');
@@ -208,5 +208,28 @@ class InventoryController extends Controller
       $json['is_successful'] = false;
     }
     return response()->json($json);
+  }
+
+  public function archiveInventory ($id) {
+    $inv = Inventory::findOrFail($id);
+
+    try {
+      $inv->status = "INACTIVE";
+      $inv->save();
+
+      $trail = new InventoryTrail;
+      $trail->productId = $id;
+      $trail->type      = "ARCHIVE";
+      $trail->message   = "has archive this product.";
+      $trail->updatedBy = Auth::user()->id;
+      $trail->save();
+
+      $json['is_successful'] = true;
+      $json['message'] = "{$inv->medicineName} has been archived.";
+    } catch (\Exception $e) {
+      $json['is_successful'] = false;
+    }
+
+    return response()->json($json, 200);
   }
 }

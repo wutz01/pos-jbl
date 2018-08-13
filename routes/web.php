@@ -158,6 +158,11 @@ Route::group(['prefix' => 'inventory', 'middleware' => ['auth', 'role:admin|owne
 		'uses' => 'InventoryController@update'
 	]);
 
+  Route::post("/archive/{id}", [
+		'as' => 'inventory.archive',
+		'uses' => 'InventoryController@archiveInventory'
+	]);
+
   Route::post("/update/quantity/{id}", [
 		'as' => 'inventory.update.quantity',
 		'uses' => 'InventoryController@updateQuantity'

@@ -42,16 +42,16 @@
             <div class="content">
               <div class="row">
                 <div class="col-md-2">
-                  <button type="button" class="btn btn-success btn-icon" id="add-qty-btn" rel="tooltip" data-placement="bottom" title="Add Quantity" trigger><i class="fa fa-plus"></i></button>
+                  <button type="button" class="btn btn-success btn-icon" id="add-qty-btn" rel="tooltip" data-placement="bottom" title="Add Quantity" trigger {{ ($stock->status === 'INACTIVE' ? 'disabled' : '') }}><i class="fa fa-plus"></i></button>
                 </div>
                 <div class="col-md-2">
-                  <button type="button" class="btn btn-danger btn-icon" id="remove-qty-btn" rel="tooltip" data-placement="bottom" title="Remove Quantity" trigger><i class="fa fa-minus"></i></button>
+                  <button type="button" class="btn btn-danger btn-icon" id="remove-qty-btn" rel="tooltip" data-placement="bottom" title="Remove Quantity" trigger {{ ($stock->status === 'INACTIVE' ? 'disabled' : '') }}><i class="fa fa-minus"></i></button>
                 </div>
                 <div class="col-md-2">
-                  <button type="button" class="btn btn-info btn-icon" id="edit-inventory-btn" rel="tooltip" data-placement="bottom" title="Edit Inventory"><i class="fa fa-pencil"></i></button>
+                  <button type="button" class="btn btn-info btn-icon" id="edit-inventory-btn" rel="tooltip" data-placement="bottom" title="Edit Inventory" {{ ($stock->status === 'INACTIVE' ? 'disabled' : '') }}><i class="fa fa-pencil"></i></button>
                 </div>
                 <div class="col-md-2">
-                  <button type="button" class="btn btn-danger btn-icon" id="delete-inventory-btn" rel="tooltip" data-placement="bottom" title="Delete Inventory"><i class="fa fa-trash"></i></button>
+                  <button type="button" class="btn btn-danger btn-icon" id="delete-inventory-btn" rel="tooltip" data-placement="bottom" title="Delete Inventory" {{ ($stock->status === 'INACTIVE' ? 'disabled' : '') }}><i class="fa fa-trash"></i></button>
                 </div>
               </div>
             </div>
@@ -162,7 +162,31 @@
             btnClass: 'btn-red',
             keys: ['enter'],
             action: () => {
-              $.alert('You betcha!');
+              $.post("{!! route('inventory.archive', ['id' => $stock->id]) !!}", {}, function (o) {
+                if (o.is_successful) {
+                  $.notify({
+                    icon: 'ti-check',
+                    message: o.message
+                  },{
+                      type: 'success',
+                      timer: 2000
+                  });
+                  loadTrail();
+
+                  setTimeout(function () {
+                    window.location.href = "{{ route('inventory.index') }}";
+                  }, 2000)
+                } else {
+                  console.log('failed');
+                  $.notify({
+                    icon: 'ti-check',
+                    message: "Failed updating stock status"
+                  },{
+                    type: 'warning',
+                    timer: 2000
+                  });
+                }
+              }, 'json');
             }
           },
           cancel: {
@@ -170,7 +194,6 @@
             btnClass: 'btn-default',
             keys: ['esc'],
             action: () => {
-              $.alert('good choice!');
             }
           }
         }

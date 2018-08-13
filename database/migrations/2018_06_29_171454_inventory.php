@@ -23,6 +23,7 @@ class Inventory extends Migration
         $table->decimal('supplierPrice', 19,2);
         $table->string('supplierName')->nullable();
         $table->integer('stockQty')->unsigned()->default(0);
+        $table->string('status')->comment('ACTIVE/INACTIVE')->default('ACTIVE');
         $table->timestamps();
       });
     }

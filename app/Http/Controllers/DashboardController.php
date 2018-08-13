@@ -316,7 +316,7 @@ class DashboardController extends Controller
     }
 
     public function endingInventory () {
-      $orders   = Inventory::orderBy('medicineName', 'desc')->get();
+      $orders   = Inventory::where('status', 'ACTIVE')->orderBy('medicineName', 'desc')->get();
 
       $sales = [];
       $sales[] = ['Product Name', 'Product Type', 'Quantity', 'Price/pc', 'Bulk Price', 'Supplier`s Name', 'Supplier`s Price'];
