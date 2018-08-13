@@ -316,19 +316,20 @@ class DashboardController extends Controller
     }
 
     public function endingInventory () {
-      $orders   = Inventory::where('status', 'ACTIVE')->orderBy('medicineName', 'desc')->get();
+      $orders   = Inventory::where('status', 'ACTIVE')->orderBy('medicineName', 'asc')->get();
 
       $sales = [];
-      $sales[] = ['Product Name', 'Product Type', 'Quantity', 'Price/pc', 'Bulk Price', 'Supplier`s Name', 'Supplier`s Price'];
+      $sales[] = ['ENDING INVENTORY'];
+      $sales[] = ['ITEM DESCRIPTION', 'ITEM TYPE', 'UNIT PRICE', 'SELLING PRICE / PC', 'QUANTITY', 'TOTAL PURCHASE AMOUNT', 'SUPPLIERS'];
       foreach ($orders as $key => $value) {
         $sales[] = [
           $value->medicineName,
           $value->medicineType,
-          (int) $value->stockQty,
+          (float) $value->supplierPrice,
           (float) $value->pricePerPiece,
-          (float) $value->bulkPrice,
-          ($value->supplierName ? $value->supplierName : '-'),
-          (float) $value->supplierPrice
+          (int) $value->stockQty,
+          (int) $value->stockQty * (float) $value->supplierPrice,
+          ($value->supplierName ? $value->supplierName : '-')
         ];
       }
 
@@ -342,13 +343,44 @@ class DashboardController extends Controller
 
           // Build the spreadsheet, passing in the payments array
           $excel->sheet('sheet1', function($sheet) use ($sales) {
-            $sheet->cells('A1:G1', function($cells) {
+            $sheet->setAutoSize(true);
+            $sheet->setHeight(2, 50);
+            $sheet->mergeCells('A1:G1');
+            $sheet->cells('A1:G1', function ($cells) {
+              $cells->setAlignment('center');
+              $cells->setFontSize(20);
+              $cells->setFontWeight('bold');
+            });
+            $sheet->cells('A2:G2', function($cells) {
+              $cells->setAlignment('center');
               $cells->setFontSize(16);
               $cells->setFontWeight('bold');
             });
+            $sheet->setColumnFormat(array(
+                'C' => '0.00',
+                'D' => '0.00',
+                'E' => '0',
+                'F' => '0.00',
+            ));
             $sheet->fromArray($sales, null, 'A1', false, false);
           });
 
       })->download('xlsx');
+    }
+
+    public function importInventory () {
+      $filename = public_path() . '/import/filtered.xlsx';
+      Excel::load($filename, function ($reader) {
+        $results = $reader->get();
+        foreach($results as $key => $value) {
+          $inv = new Inventory;
+          $inv->medicineName  = $value->item;
+          $inv->supplierPrice = (float) $value->unit;
+          $inv->pricePerPiece = ($value->srp ? (float) $value->srp : 0.00);
+          $inv->bulkPrice     = ($value->bulk ? (float) $value->bulk : (float) $value->srp);
+          $inv->supplierName  = "NORVIC DRUG";
+          $inv->save();
+        }
+      })->get();
     }
 }

@@ -119,6 +119,11 @@ Route::group(['prefix' => 'reports', 'middleware' => ['auth']], function () {
     'as' => 'report-download-date-range',
     'uses' => 'DashboardController@downloadDateRange'
   ]);
+
+  Route::get('import/inventory', [
+    'as' => 'import-inventory',
+    'uses' => 'DashboardController@importInventory'
+  ]);
 });
 
 Route::group(['prefix' => 'inventory', 'middleware' => ['auth', 'role:admin|owner']], function () {
