@@ -133,14 +133,28 @@
       $.confirm({
         title: 'Order',
         type: 'green',
+        columnClass: 'col-md-6 col-md-offset-3',
         content: '' +
         '<form action="" class="formName">' +
         '<div class="form-group">' +
         '<label>How many quantity to order?</label>' +
         '<input type="number" placeholder="0" class="quantity form-control" required />' +
         '<div class="checkbox">' +
-        '<label><input type="checkbox" class="useBulk form-control" value="bulk"/> Use Bulk Price?</label>' +
+        '<span class="icons"><span class="first-icon fa fa-square fa-base"></span><span class="second-icon fa fa-check-square fa-base"></span></span>' +
+        '<input type="checkbox" class="useBulk form-control" value="bulk"/>' +
+        '<label>Use Bulk Price</label>' +
         '</div></div>' +
+        '<div class="checkbox">' +
+          '<span class="icons"><span class="first-icon fa fa-square fa-base"></span><span class="second-icon fa fa-check-square fa-base"></span></span>' +
+  		    '<input id="markUp" type="checkbox">' +
+  		    '<label for="markUp">' +
+    		 	    'Use Unit Price + Mark-up' +
+  		    '</label>' +
+  			'</div>' +
+        '<div class="form-group">' +
+        '<label>Mark-Up %</label>' +
+        '<input type="number" placeholder="0" class="markUp form-control"/>' +
+        '</div>' +
         '</form>',
         buttons: {
           formSubmit: {
@@ -149,11 +163,22 @@
             action: function () {
               var quantity = this.$content.find('.quantity').val();
               var useBulk = this.$content.find('.useBulk').is(':checked');
+              var isMarkUp = this.$content.find('#markUp').is(':checked');
+              var markUp = this.$content.find('.markUp').val();
               if(!quantity || !Number.isInteger(parseInt(quantity)) || parseInt(quantity) <= 0){
-                  $.alert('Provide a valid quantity');
-                  return false;
+                $.alert('Provide a valid quantity');
+                return false;
               }
-              $.post("{!! route('add-to-cart') !!}", {productId: productId, quantity: quantity, useBulk: useBulk}, (o) => {
+              if (isMarkUp && (!Number.isInteger(parseInt(markUp)) || parseInt(markUp) <= 0)) {
+                $.alert('Provide a valid mark up %');
+                return false;
+              }
+
+              if (isMarkUp && useBulk) {
+                $.alert('Please choose only 1 on either Bulk Price or Use Mark-up');
+                return false;
+              }
+              $.post("{!! route('add-to-cart') !!}", {productId: productId, quantity: quantity, useBulk: useBulk, isMarkUp: isMarkUp, markUp: markUp}, (o) => {
                 if (o.is_successful) {
                   $.notify({
                     icon: 'ti-check',

@@ -92,15 +92,19 @@ class SalesController extends Controller
     }
     $stock->save();
 
+    $price = $stock->pricePerPiece;
+    if ($request->input('isMarkUp') == "true") {
+      $price = $stock->supplierPrice + ($stock->supplierPrice * ((int) $request->input('markUp') / 100));
+    }
     $item = new OrderItems;
     $item->orderId        = $order->id;
     $item->productId      = $request->input('productId');
     $item->quantity       = (int) $request->input('quantity');
     $item->isBulk         = $request->input('useBulk') == "true" ? true : false;
-    $item->pricePerPiece  = $stock->pricePerPiece;
+    $item->pricePerPiece  = $price;
     $item->bulkPrice      = $stock->bulkPrice;
     $item->discount       = 0;
-    $item->totalPrice     = ($request->input('useBulk') == "true" ? $stock->bulkPrice : $stock->pricePerPiece) * (int) $request->input('quantity');
+    $item->totalPrice     = ($request->input('useBulk') == "true" ? $stock->bulkPrice : $price) * (int) $request->input('quantity');
     $item->save();
 
     $trail = new InventoryTrail;

@@ -12,6 +12,7 @@ use Excel;
 class DashboardController extends Controller
 {
     public function __construct () {
+      date_default_timezone_set('Asia/Manila');
     }
 
     public function index () {
@@ -266,7 +267,7 @@ class DashboardController extends Controller
       $orders   = OrderItems::whereBetween('created_at', [$fromDate." 00:00:00", $tillDate." 23:59:59"])->get();
 
       $sales = [];
-      $sales[] = ['Product Name', 'Quantity', 'Supplier`s Price', 'Total', 'Net Sales'];
+      $sales[] = ['Product Name', 'Quantity', 'Unit Price', 'Gross Sales', 'Net Sales'];
       $sum = 0;
       $totalQty = 0;
       foreach ($orders as $key => $value) {

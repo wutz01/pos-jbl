@@ -2,12 +2,15 @@
   <thead class="thead-dark">
     <th>Medicine Name</th>
     <th>Quantity</th>
-    <th>Supplier Price</th>
-    <th>Total Price</th>
+    <th>Unit Price</th>
+    <th>Gross</th>
     <th>Net</th>
   </thead>
   <tbody>
     @if(count($sales))
+      @php
+        $net = 0;
+      @endphp
       @foreach($sales as $key => $value)
         <tr>
           <td>{{ $value['productName'] }}</td>
@@ -16,13 +19,16 @@
           <td>&#8369; {{ number_format($value['totalPrice'], 2, '.', ',') }}</td>
           <td>&#8369; {{ number_format($value['total'], 2, '.', ',') }}</td>
         </tr>
+        @php
+          $net += $value['total'];
+        @endphp
       @endforeach
       <tr>
         <td style="text-align: right">TOTAL:</td>
         <td>{{ $totalQty }}</td>
         <td>-</td>
         <td>&#8369; {{ number_format($sum, 2, '.', ',') }}</td>
-        <td>-</td>
+        <td>&#8369; {{ number_format($net, 2, '.', ',') }}</td>
       </tr>
     @else
     <tr>

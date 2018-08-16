@@ -20,14 +20,22 @@
     </tr>
   @endforeach
     <tr>
-      <td>-</td>
-      <td style="text-align: right;">Total Quantity:</td>
+      <td colspan="2" style="text-align: right;">Total Quantity:</td>
       <td style="text-align: center;" class="total-quantity">0</td>
       <td style="text-align: right;">Global Discount:</td>
       <td><input type="number" value="{{ $order->globalDiscount }}" class="discount table-input globalDiscount" rel="tooltip" title="Global Discount" trigger data-placement="bottom" name="globalDiscount"></td>
       <td><input type="text" value="0" class="price table-input grandTotal" name="grandTotal" readonly></td>
     </tr>
     <tr>
+      <!-- <td colspan="2">
+        <div class="checkbox" style="width: 100% !important; padding: auto !important;">
+          <span class="icons"><span class="first-icon fa fa-square fa-base"></span><span class="second-icon fa fa-check-square fa-base"></span></span>
+  		    <input id="markUp" type="checkbox">
+  		    <label for="markUp" style="padding-left: 30px;">
+    		 	    Use Unit Price + Mark-up
+  		    </label>
+  			</div>
+      </td> -->
       <td colspan="4" style="text-align: right">Senior Citizen ID: </td>
       <td colspan="2"><input type="text" value="" class="seniorCitizen"></td>
     </tr>
