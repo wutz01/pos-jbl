@@ -374,12 +374,15 @@ class DashboardController extends Controller
       Excel::load($filename, function ($reader) {
         $results = $reader->get();
         foreach($results as $key => $value) {
+
+          $srp  = str_replace(',', '', $value->srp);
+          $bulk = str_replace(',', '', $value->bulk);
           $inv = new Inventory;
           $inv->medicineName  = $value->item;
           $inv->supplierPrice = (float) $value->unit;
-          $inv->pricePerPiece = ($value->srp ? (float) $value->srp : 0.00);
-          $inv->bulkPrice     = ($value->bulk ? (float) $value->bulk : (float) $value->srp);
-          $inv->supplierName  = "NORVIC DRUG";
+          $inv->pricePerPiece = ($srp ? (float) $srp : 0.00);
+          $inv->bulkPrice     = ($bulk ? (float) $bulk : (float) $srp);
+          $inv->supplierName  = $value->name;
           $inv->save();
         }
       })->get();
