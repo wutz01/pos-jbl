@@ -32,7 +32,7 @@ class SalesController extends Controller
   }
 
   public function loadInventory (Request $request) {
-    $inventory = Inventory::where('medicineName', 'LIKE', '%' . $request->input('query') . '%')->orWhere('medicineType', 'LIKE', '%' . $request->input('query') . '%')->get();
+    $inventory = Inventory::where('status', '=', 'ACTIVE', 'AND')->where('medicineName', 'LIKE', '%' . $request->input('query') . '%')->orWhere('medicineType', 'LIKE', '%' . $request->input('query') . '%')->get();
     $stocks = [];
     foreach ($inventory as $key => $value) {
       $object = (object)[];
