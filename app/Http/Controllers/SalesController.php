@@ -104,6 +104,8 @@ class SalesController extends Controller
     $item->pricePerPiece  = $price;
     $item->bulkPrice      = $stock->bulkPrice;
     $item->discount       = 0;
+    $item->markup         = $request->input('isMarkUp') == "true" ? $request->input('markUp') : 0;
+    $item->isMarkUp       = $request->input('isMarkUp') == "true" ? true : false;
     $item->totalPrice     = ($request->input('useBulk') == "true" ? $stock->bulkPrice : $price) * (int) $request->input('quantity');
     $item->save();
 
@@ -125,7 +127,6 @@ class SalesController extends Controller
     $now = Carbon::now();
     $stock = $item->inventory;
     if ($now->diffInMinutes($item->created_at) < 5) {
-      // $item->quantity   = (int) $request->input('quantity');
       $item->discount   = (int) $request->input('discount');
       $item->totalPrice = (float) $request->input('totalPrice');
       $item->save();

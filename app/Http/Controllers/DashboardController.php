@@ -79,7 +79,7 @@ class DashboardController extends Controller
       $ordersArray = [];
 
       // Define the Excel spreadsheet headers
-      $ordersArray[] = ['Medicine Name', 'Quantity', 'Price per Item', 'Discounts', 'Total Price' , 'Date Time Ordered', 'Price Type', 'Senior Citizen ID'];
+      $ordersArray[] = ['Medicine Name', 'Quantity', 'Price per Item', 'Mark-Up', 'Discounts', 'Total Price' , 'Date Time Ordered', 'Price Type', 'Senior Citizen ID'];
 
       // Convert each member of the returned collection into an array,
       // and append it to the payments array.
@@ -91,15 +91,15 @@ class DashboardController extends Controller
           $priceType = ($item->isBulk ? "BULK PRICE" : "REGULAR PRICE");
           // $orderedDate = date($item->created_at, "M d, Y h:i a");
           $orderedDate = $item->created_at;
-          $array = [$stock->medicineName, $item->quantity, $price, $item->discount, $item->totalPrice, $orderedDate, $priceType];
+          $array = [$stock->medicineName, $item->quantity, $price, $item->markup, $item->discount, $item->totalPrice, $orderedDate, $priceType];
           $ordersArray[] = $array;
         }
-        $ordersArray[] = ['TOTAL QUANTITY: ', $value->totalQuantity, 'GLOBAL DISCOUNT: ', $value->globalDiscount, 'GROSS: '.$value->grossPrice, 'NET: '.$value->netPrice, $value->created_at, $value->sc->seniorCitizen];
+        $ordersArray[] = ['TOTAL QUANTITY: ', $value->totalQuantity, '', 'GLOBAL DISCOUNT: ', $value->globalDiscount, 'GROSS: '.$value->grossPrice, 'NET: '.$value->netPrice, $value->created_at, $value->sc->seniorCitizen];
         $ordersArray[] = ['','','','','','',''];
       }
 
       $ordersArray[] = ['','','','','','',''];
-      $ordersArray[] = ['','','','','TOTAL SALES:',$sum,''];
+      $ordersArray[] = ['','','','','','TOTAL SALES:',$sum,''];
 
       // // Generate and return the spreadsheet
       $fileName = date("m-d-Y-his");
@@ -111,7 +111,7 @@ class DashboardController extends Controller
 
           // Build the spreadsheet, passing in the payments array
           $excel->sheet('sheet1', function($sheet) use ($ordersArray) {
-            $sheet->cells('A1:H1', function($cells) {
+            $sheet->cells('A1:I1', function($cells) {
               $cells->setFontSize(16);
               $cells->setFontWeight('bold');
             });
@@ -132,7 +132,7 @@ class DashboardController extends Controller
       $ordersArray = [];
 
       // Define the Excel spreadsheet headers
-      $ordersArray[] = ['Medicine Name', 'Quantity', 'Price per Item', 'Discounts', 'Total Price' , 'Date Time Ordered', 'Price Type', 'Senior Citizen ID'];
+      $ordersArray[] = ['Medicine Name', 'Quantity', 'Price per Item', 'Mark-Up', 'Discounts', 'Total Price' , 'Date Time Ordered', 'Price Type', 'Senior Citizen ID'];
 
       // Convert each member of the returned collection into an array,
       // and append it to the payments array.
@@ -144,15 +144,15 @@ class DashboardController extends Controller
           $priceType = ($item->isBulk ? "BULK PRICE" : "REGULAR PRICE");
           // $orderedDate = date($item->created_at, "M d, Y h:i a");
           $orderedDate = $item->created_at;
-          $array = [$stock->medicineName, $item->quantity, $price, $item->discount, $item->totalPrice, $orderedDate, $priceType];
+          $array = [$stock->medicineName, $item->quantity, $price, $item->markup, $item->discount, $item->totalPrice, $orderedDate, $priceType];
           $ordersArray[] = $array;
         }
-        $ordersArray[] = ['TOTAL QUANTITY: ', $value->totalQuantity, 'GLOBAL DISCOUNT: ', $value->globalDiscount, 'GROSS: '.$value->grossPrice, 'NET: '.$value->netPrice, $value->created_at, $value->sc->seniorCitizen];
+        $ordersArray[] = ['TOTAL QUANTITY: ', $value->totalQuantity, '', 'GLOBAL DISCOUNT: ', $value->globalDiscount, 'GROSS: '.$value->grossPrice, 'NET: '.$value->netPrice, $value->created_at, $value->sc->seniorCitizen];
         $ordersArray[] = ['','','','','','',''];
       }
 
       $ordersArray[] = ['','','','','','',''];
-      $ordersArray[] = ['','','','','TOTAL SALES:',$sum,''];
+      $ordersArray[] = ['','','','','','TOTAL SALES:',$sum,''];
 
       // // Generate and return the spreadsheet
       $fileName = date("M") . " - Weekly Sales - " . date("his");
@@ -164,7 +164,7 @@ class DashboardController extends Controller
 
           // Build the spreadsheet, passing in the payments array
           $excel->sheet('sheet1', function($sheet) use ($ordersArray) {
-            $sheet->cells('A1:H1', function($cells) {
+            $sheet->cells('A1:I1', function($cells) {
               $cells->setFontSize(16);
               $cells->setFontWeight('bold');
             });
@@ -185,7 +185,7 @@ class DashboardController extends Controller
       $ordersArray = [];
 
       // Define the Excel spreadsheet headers
-      $ordersArray[] = ['Medicine Name', 'Quantity', 'Price per Item', 'Discounts', 'Total Price' , 'Date Time Ordered', 'Price Type', 'Senior Citizen ID'];
+      $ordersArray[] = ['Medicine Name', 'Quantity', 'Price per Item', 'Mark-Up', 'Discounts', 'Total Price' , 'Date Time Ordered', 'Price Type', 'Senior Citizen ID'];
 
       // Convert each member of the returned collection into an array,
       // and append it to the payments array.
@@ -197,15 +197,15 @@ class DashboardController extends Controller
           $priceType = ($item->isBulk ? "BULK PRICE" : "REGULAR PRICE");
           // $orderedDate = date($item->created_at, "M d, Y h:i a");
           $orderedDate = $item->created_at;
-          $array = [$stock->medicineName, $item->quantity, $price, $item->discount, $item->totalPrice, $orderedDate, $priceType];
+          $array = [$stock->medicineName, $item->quantity, $price, $item->markup, $item->discount, $item->totalPrice, $orderedDate, $priceType];
           $ordersArray[] = $array;
         }
-        $ordersArray[] = ['TOTAL QUANTITY: ', $value->totalQuantity, 'GLOBAL DISCOUNT: ', $value->globalDiscount, 'GROSS: '.$value->grossPrice, 'NET: '.$value->netPrice, $value->created_at, $value->sc->seniorCitizen];
+        $ordersArray[] = ['TOTAL QUANTITY: ', $value->totalQuantity, '', 'GLOBAL DISCOUNT: ', $value->globalDiscount, 'GROSS: '.$value->grossPrice, 'NET: '.$value->netPrice, $value->created_at, $value->sc->seniorCitizen];
         $ordersArray[] = ['','','','','','',''];
       }
 
       $ordersArray[] = ['','','','','','',''];
-      $ordersArray[] = ['','','','','TOTAL SALES:',$sum,''];
+      $ordersArray[] = ['','','','','','TOTAL SALES:',$sum,''];
 
       // // Generate and return the spreadsheet
       $fileName = date("M") . " - Sales - " . date("his");
@@ -217,7 +217,7 @@ class DashboardController extends Controller
 
           // Build the spreadsheet, passing in the payments array
           $excel->sheet('sheet1', function($sheet) use ($ordersArray) {
-            $sheet->cells('A1:H1', function($cells) {
+            $sheet->cells('A1:I1', function($cells) {
               $cells->setFontSize(16);
               $cells->setFontWeight('bold');
             });

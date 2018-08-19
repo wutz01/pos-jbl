@@ -1,6 +1,6 @@
 @if(count($items) <= 0)
 <tr class="no-data-available">
-  <td colspan="6" style="text-align: center">No Data available</td>
+  <td colspan="7" style="text-align: center">No Data available</td>
 </tr>
 @else
   @foreach($items as $item)
@@ -126,9 +126,7 @@
           type: 'warning',
           timer: 2000
         });
-
-        $("#input-quantity-" + o.item.id).val(o.item.quantity);
-        recompute(o.item.id);
+        loadCart();
       }
     }, 'json');
   }

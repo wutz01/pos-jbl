@@ -59,8 +59,8 @@
               <table class="table table-hover">
                 <thead>
                   <th width="10%"></th>
-                  <th width="55%">Medicine Name</th>
-                  <th width="10%">Quantity</th>
+                  <th width="50%">Medicine Name</th>
+                  <th width="5%">Quantity</th>
                   <th width="10%">Price</th>
                   <th width="5%">Disc (%)</th>
                   <th width="10%">Total</th>
@@ -127,23 +127,23 @@
         $("#btn-finalize").removeAttr('disabled');
       }, 'json');
     });
-
+    // '<div class="checkbox">' +
+    // '<span class="icons"><span class="first-icon fa fa-square fa-base"></span><span class="second-icon fa fa-check-square fa-base"></span></span>' +
+    // '<input type="checkbox" class="useBulk form-control" value="bulk"/>' +
+    // '<label>Use Bulk Price</label>' +
+    // '</div>
     $("#add-product-btn").on('click', function () {
       if (!productId) return false
       $.confirm({
         title: 'Order',
         type: 'green',
-        columnClass: 'col-md-6 col-md-offset-3',
+        columnClass: 'col-md-4 col-md-offset-4',
         content: '' +
         '<form action="" class="formName">' +
         '<div class="form-group">' +
         '<label>How many quantity to order?</label>' +
         '<input type="number" placeholder="0" class="quantity form-control" required />' +
-        '<div class="checkbox">' +
-        '<span class="icons"><span class="first-icon fa fa-square fa-base"></span><span class="second-icon fa fa-check-square fa-base"></span></span>' +
-        '<input type="checkbox" class="useBulk form-control" value="bulk"/>' +
-        '<label>Use Bulk Price</label>' +
-        '</div></div>' +
+        '</div>' +
         '<div class="checkbox">' +
           '<span class="icons"><span class="first-icon fa fa-square fa-base"></span><span class="second-icon fa fa-check-square fa-base"></span></span>' +
   		    '<input id="markUp" type="checkbox">' +
@@ -160,6 +160,7 @@
           formSubmit: {
             text: 'Add',
             btnClass: 'btn-green',
+            keys: ['enter'],
             action: function () {
               var quantity = this.$content.find('.quantity').val();
               var useBulk = this.$content.find('.useBulk').is(':checked');

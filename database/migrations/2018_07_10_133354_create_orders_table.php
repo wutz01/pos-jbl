@@ -43,6 +43,8 @@ class CreateOrdersTable extends Migration
           $table->decimal('pricePerPiece', 19, 2);
           $table->decimal('bulkPrice', 19, 2);
           $table->integer('discount');
+          $table->boolean('isMarkup')->comment('if true use Unit + mark%');
+          $table->integer('markup');
           $table->decimal('totalPrice', 19, 2);
           $table->timestamps();
         });
