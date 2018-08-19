@@ -12,7 +12,7 @@ use Excel;
 class DashboardController extends Controller
 {
     public function __construct () {
-      date_default_timezone_set('Asia/Manila');
+      date_default_timezone_set("Asia/Manila");
     }
 
     public function index () {
@@ -25,8 +25,8 @@ class DashboardController extends Controller
       $firstDayMonth = Carbon::parse('first day of this month')->toDateString();
       $lastDayMonth = Carbon::parse('last day of this month')->toDateString();
 
-      $weeklySales = Orders::whereBetween('created_at', [$fromDate, $tillDate])->sum('netPrice');
-      $monthlySales = Orders::whereBetween('created_at', [$firstDayMonth, $lastDayMonth])->sum('netPrice');
+      $weeklySales = Orders::whereBetween('created_at', [$fromDate." 00:00:00", $tillDate." 23:59:59"])->sum('netPrice');
+      $monthlySales = Orders::whereBetween('created_at', [$firstDayMonth." 00:00:00", $lastDayMonth." 23:59:59"])->sum('netPrice');
 
       // yearly
       $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -57,8 +57,8 @@ class DashboardController extends Controller
       $firstDayMonth = Carbon::parse('first day of this month')->toDateString();
       $lastDayMonth = Carbon::parse('last day of this month')->toDateString();
 
-      $weeklySales = Orders::whereBetween('created_at', [$fromDate, $tillDate])->sum('netPrice');
-      $monthlySales = Orders::whereBetween('created_at', [$firstDayMonth, $lastDayMonth])->sum('netPrice');
+      $weeklySales = Orders::whereBetween('created_at', [$fromDate." 00:00:00", $tillDate." 23:59:59"])->sum('netPrice');
+      $monthlySales = Orders::whereBetween('created_at', [$firstDayMonth." 00:00:00", $lastDayMonth." 23:59:59"])->sum('netPrice');
 
       return view('reports.index', compact('todaySales', 'weeklySales', 'monthlySales'));
     }
@@ -124,8 +124,8 @@ class DashboardController extends Controller
     public function weeklyDownload() {
       $fromDate = Carbon::now()->subDay()->startOfWeek()->toDateString();
       $tillDate = Carbon::now()->subDay()->startOfWeek()->addDays(6)->toDateString();
-      $orders   = Orders::whereBetween('created_at', [$fromDate, $tillDate])->get();
-      $sum      = Orders::whereBetween('created_at', [$fromDate, $tillDate])->sum('netPrice');
+      $orders   = Orders::whereBetween('created_at', [$fromDate." 00:00:00", $tillDate." 23:59:59"])->get();
+      $sum      = Orders::whereBetween('created_at', [$fromDate." 00:00:00", $tillDate." 23:59:59"])->sum('netPrice');
 
       // Initialize the array which will be passed into the Excel
       // generator.
@@ -177,8 +177,8 @@ class DashboardController extends Controller
     public function monthlyDownload() {
       $firstDayMonth = Carbon::parse('first day of this month')->toDateString();
       $lastDayMonth = Carbon::parse('last day of this month')->toDateString();
-      $orders   = Orders::whereBetween('created_at', [$firstDayMonth, $lastDayMonth])->get();
-      $sum   = Orders::whereBetween('created_at', [$firstDayMonth, $lastDayMonth])->sum('netPrice');
+      $orders   = Orders::whereBetween('created_at', [$firstDayMonth." 00:00:00", $lastDayMonth." 23:59:59"])->get();
+      $sum   = Orders::whereBetween('created_at', [$firstDayMonth." 00:00:00", $lastDayMonth." 23:59:59"])->sum('netPrice');
 
       // Initialize the array which will be passed into the Excel
       // generator.
