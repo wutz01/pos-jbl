@@ -17,7 +17,7 @@ class DashboardController extends Controller
 
     public function index () {
       // today
-      $todaySales = Orders::whereDate('created_at', Carbon::today())->sum('netPrice');
+      $todaySales = Orders::where('status', '=', 'SALE')->whereDate('created_at', Carbon::today())->sum('netPrice');
       //  weekly
       $fromDate = Carbon::now()->subDay()->startOfWeek()->toDateString();
       $tillDate = Carbon::now()->subDay()->startOfWeek()->addDays(6)->toDateString();
@@ -25,8 +25,8 @@ class DashboardController extends Controller
       $firstDayMonth = Carbon::parse('first day of this month')->toDateString();
       $lastDayMonth = Carbon::parse('last day of this month')->toDateString();
 
-      $weeklySales = Orders::whereBetween('created_at', [$fromDate." 00:00:00", $tillDate." 23:59:59"])->sum('netPrice');
-      $monthlySales = Orders::whereBetween('created_at', [$firstDayMonth." 00:00:00", $lastDayMonth." 23:59:59"])->sum('netPrice');
+      $weeklySales = Orders::where('status', '=', 'SALE')->whereBetween('created_at', [$fromDate." 00:00:00", $tillDate." 23:59:59"])->sum('netPrice');
+      $monthlySales = Orders::where('status', '=', 'SALE')->whereBetween('created_at', [$firstDayMonth." 00:00:00", $lastDayMonth." 23:59:59"])->sum('netPrice');
 
       // yearly
       $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -37,8 +37,8 @@ class DashboardController extends Controller
         $yearToday = date('Y');
         $start = Carbon::parse("first day of {$value} {$yearToday}")->toDateString();
         $end = Carbon::parse("last day of {$value} {$yearToday}")->toDateString();
-        $sales = Orders::whereBetween('created_at', [$start, $end])->sum('netPrice');
-        $gsales = Orders::whereBetween('created_at', [$start, $end])->sum('grossPrice');
+        $sales = Orders::where('status', '=', 'SALE')->whereBetween('created_at', [$start, $end])->sum('netPrice');
+        $gsales = Orders::where('status', '=', 'SALE')->whereBetween('created_at', [$start, $end])->sum('grossPrice');
         $yearlySales[] = (float) $sales;
         $grossSales[] = (float) $gsales;
       }
@@ -49,7 +49,7 @@ class DashboardController extends Controller
 
     public function reportsIndex () {
       // today
-      $todaySales = Orders::whereDate('created_at', Carbon::today())->sum('netPrice');
+      $todaySales = Orders::where('status', '=', 'SALE')->whereDate('created_at', Carbon::today())->sum('netPrice');
       //  weekly
       $fromDate = Carbon::now()->subDay()->startOfWeek()->toDateString();
       $tillDate = Carbon::now()->subDay()->startOfWeek()->addDays(6)->toDateString();
@@ -57,8 +57,8 @@ class DashboardController extends Controller
       $firstDayMonth = Carbon::parse('first day of this month')->toDateString();
       $lastDayMonth = Carbon::parse('last day of this month')->toDateString();
 
-      $weeklySales = Orders::whereBetween('created_at', [$fromDate." 00:00:00", $tillDate." 23:59:59"])->sum('netPrice');
-      $monthlySales = Orders::whereBetween('created_at', [$firstDayMonth." 00:00:00", $lastDayMonth." 23:59:59"])->sum('netPrice');
+      $weeklySales = Orders::where('status', '=', 'SALE')->whereBetween('created_at', [$fromDate." 00:00:00", $tillDate." 23:59:59"])->sum('netPrice');
+      $monthlySales = Orders::where('status', '=', 'SALE')->whereBetween('created_at', [$firstDayMonth." 00:00:00", $lastDayMonth." 23:59:59"])->sum('netPrice');
 
       return view('reports.index', compact('todaySales', 'weeklySales', 'monthlySales'));
     }
@@ -71,8 +71,8 @@ class DashboardController extends Controller
       // the user's e-mail address, the amount paid, and the payment
       // timestamp.
 
-      $orders = Orders::whereDate('created_at', Carbon::today())->get();
-      $sum = Orders::whereDate('created_at', Carbon::today())->sum('netPrice');
+      $orders = Orders::where('status', '=', 'SALE')->whereDate('created_at', Carbon::today())->get();
+      $sum = Orders::where('status', '=', 'SALE')->whereDate('created_at', Carbon::today())->sum('netPrice');
 
       // Initialize the array which will be passed into the Excel
       // generator.
@@ -94,7 +94,7 @@ class DashboardController extends Controller
           $array = [$stock->medicineName, $item->quantity, $price, $item->markup, $item->discount, $item->totalPrice, $orderedDate, $priceType];
           $ordersArray[] = $array;
         }
-        $ordersArray[] = ['TOTAL QUANTITY: ', $value->totalQuantity, '', 'GLOBAL DISCOUNT: ', $value->globalDiscount, 'GROSS: '.$value->grossPrice, 'NET: '.$value->netPrice, $value->created_at, $value->sc->seniorCitizen];
+        $ordersArray[] = ['TOTAL QUANTITY: ', $value->totalQuantity, '', 'GLOBAL DISCOUNT: ', $value->globalDiscount, 'GROSS: '.$value->grossPrice, 'NET: '.$value->netPrice, $value->created_at, ($value->scId ? $value->sc->seniorCitizen : '-')];
         $ordersArray[] = ['','','','','','',''];
       }
 
@@ -124,8 +124,8 @@ class DashboardController extends Controller
     public function weeklyDownload() {
       $fromDate = Carbon::now()->subDay()->startOfWeek()->toDateString();
       $tillDate = Carbon::now()->subDay()->startOfWeek()->addDays(6)->toDateString();
-      $orders   = Orders::whereBetween('created_at', [$fromDate." 00:00:00", $tillDate." 23:59:59"])->get();
-      $sum      = Orders::whereBetween('created_at', [$fromDate." 00:00:00", $tillDate." 23:59:59"])->sum('netPrice');
+      $orders   = Orders::where('status', '=', 'SALE')->whereBetween('created_at', [$fromDate." 00:00:00", $tillDate." 23:59:59"])->get();
+      $sum      = Orders::where('status', '=', 'SALE')->whereBetween('created_at', [$fromDate." 00:00:00", $tillDate." 23:59:59"])->sum('netPrice');
 
       // Initialize the array which will be passed into the Excel
       // generator.
@@ -147,7 +147,7 @@ class DashboardController extends Controller
           $array = [$stock->medicineName, $item->quantity, $price, $item->markup, $item->discount, $item->totalPrice, $orderedDate, $priceType];
           $ordersArray[] = $array;
         }
-        $ordersArray[] = ['TOTAL QUANTITY: ', $value->totalQuantity, '', 'GLOBAL DISCOUNT: ', $value->globalDiscount, 'GROSS: '.$value->grossPrice, 'NET: '.$value->netPrice, $value->created_at, $value->sc->seniorCitizen];
+        $ordersArray[] = ['TOTAL QUANTITY: ', $value->totalQuantity, '', 'GLOBAL DISCOUNT: ', $value->globalDiscount, 'GROSS: '.$value->grossPrice, 'NET: '.$value->netPrice, $value->created_at, ($value->scId ? $value->sc->seniorCitizen : '-')];
         $ordersArray[] = ['','','','','','',''];
       }
 
@@ -177,8 +177,8 @@ class DashboardController extends Controller
     public function monthlyDownload() {
       $firstDayMonth = Carbon::parse('first day of this month')->toDateString();
       $lastDayMonth = Carbon::parse('last day of this month')->toDateString();
-      $orders   = Orders::whereBetween('created_at', [$firstDayMonth." 00:00:00", $lastDayMonth." 23:59:59"])->get();
-      $sum   = Orders::whereBetween('created_at', [$firstDayMonth." 00:00:00", $lastDayMonth." 23:59:59"])->sum('netPrice');
+      $orders   = Orders::where('status', '=', 'SALE')->whereBetween('created_at', [$firstDayMonth." 00:00:00", $lastDayMonth." 23:59:59"])->get();
+      $sum   = Orders::where('status', '=', 'SALE')->whereBetween('created_at', [$firstDayMonth." 00:00:00", $lastDayMonth." 23:59:59"])->sum('netPrice');
 
       // Initialize the array which will be passed into the Excel
       // generator.
@@ -200,7 +200,7 @@ class DashboardController extends Controller
           $array = [$stock->medicineName, $item->quantity, $price, $item->markup, $item->discount, $item->totalPrice, $orderedDate, $priceType];
           $ordersArray[] = $array;
         }
-        $ordersArray[] = ['TOTAL QUANTITY: ', $value->totalQuantity, '', 'GLOBAL DISCOUNT: ', $value->globalDiscount, 'GROSS: '.$value->grossPrice, 'NET: '.$value->netPrice, $value->created_at, $value->sc->seniorCitizen];
+        $ordersArray[] = ['TOTAL QUANTITY: ', $value->totalQuantity, '', 'GLOBAL DISCOUNT: ', $value->globalDiscount, 'GROSS: '.$value->grossPrice, 'NET: '.$value->netPrice, $value->created_at, ($value->scId ? $value->sc->seniorCitizen : '-')];
         $ordersArray[] = ['','','','','','',''];
       }
 

@@ -37,6 +37,20 @@ Route::group(['middleware' => ['auth', 'role:admin|owner']], function () {
   ])->middleware('auth');
 });
 
+Route::get('my-profile', [
+  'as' => 'profile',
+  'uses' => 'UserController@profile'
+]);
+
+Route::post('update-profile', [
+  'as' => 'update-profile',
+  'uses' => 'UserController@updateProfile'
+]);
+
+Route::group(['prefix' => 'users', 'middleware' => ['auth']], function () {
+
+});
+
 Route::group(['prefix' => 'sales', 'middleware' => ['auth']], function () {
   Route::get('/', [
   	'as' => 'sales',

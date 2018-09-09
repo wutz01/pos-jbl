@@ -38,6 +38,12 @@
         <p>Reports</p>
       </a>
     </li>
+    <li class="side-nav-profile">
+      <a href="{{ route('profile') }}">
+        <i class="ti-user"></i>
+        <p>My Profile</p>
+      </a>
+    </li>
     <!-- <li>
       <a href="icons.html">
         <i class="ti-pencil-alt2"></i>
